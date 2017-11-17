@@ -17,7 +17,7 @@ open class NodeController: UIResponder, NodeContorolling  {
         }
     }
     
-    public init(view: SCNView, node: VirtualObject) {
+    public init(view: SCNView, node: SCNNode) {
         sceneView = view
         rootNode = node
         super.init()
