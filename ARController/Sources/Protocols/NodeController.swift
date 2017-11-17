@@ -8,25 +8,24 @@
 
 import UIKit
 import SceneKit
-import ARController
 
-class NodeController: UIResponder, NodeContorolling  {
-    let sceneView: SCNView
-    var rootNode: VirtualObject! {
+open class NodeController: UIResponder, NodeContorolling  {
+    open let sceneView: SCNView
+    open var rootNode: SCNNode! {
         didSet {
             reloadRootNode()
         }
     }
     
-    init(view: SCNView, node: VirtualObject) {
+    public init(view: SCNView, node: VirtualObject) {
         sceneView = view
         rootNode = node
         super.init()
     }
     
-    func reloadRootNode() {}
+    open func reloadRootNode() {}
     
-    override var next: UIResponder? {
+    open override var next: UIResponder? {
         var candidate: SCNNode? = self.rootNode?.parent
         var result: UIResponder? = nil
         repeat {

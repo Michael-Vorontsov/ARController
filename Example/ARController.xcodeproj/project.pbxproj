@@ -15,7 +15,6 @@
 		090AEE6D1FBA395600F8EE2A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090AEE641FBA395600F8EE2A /* ViewController.swift */; };
 		090AEE701FBA3A3300F8EE2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 090AEE6E1FBA3A3300F8EE2A /* Main.storyboard */; };
 		090AEE711FBA3A3300F8EE2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 090AEE6F1FBA3A3300F8EE2A /* LaunchScreen.storyboard */; };
-		090AEE851FBA3A5C00F8EE2A /* NodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090AEE731FBA3A5B00F8EE2A /* NodeController.swift */; };
 		090AEE861FBA3A5C00F8EE2A /* StackNodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090AEE741FBA3A5B00F8EE2A /* StackNodeController.swift */; };
 		090AEE871FBA3A5C00F8EE2A /* Candle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090AEE761FBA3A5B00F8EE2A /* Candle.swift */; };
 		090AEE881FBA3A5C00F8EE2A /* Chair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090AEE771FBA3A5B00F8EE2A /* Chair.swift */; };
@@ -69,7 +68,6 @@
 		090AEE641FBA395600F8EE2A /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		090AEE6E1FBA3A3300F8EE2A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		090AEE6F1FBA3A3300F8EE2A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		090AEE731FBA3A5B00F8EE2A /* NodeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeController.swift; sourceTree = "<group>"; };
 		090AEE741FBA3A5B00F8EE2A /* StackNodeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackNodeController.swift; sourceTree = "<group>"; };
 		090AEE761FBA3A5B00F8EE2A /* Candle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candle.swift; sourceTree = "<group>"; };
 		090AEE771FBA3A5B00F8EE2A /* Chair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chair.swift; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 		090AEE721FBA3A5B00F8EE2A /* NodeControllers */ = {
 			isa = PBXGroup;
 			children = (
-				090AEE731FBA3A5B00F8EE2A /* NodeController.swift */,
 				090AEE741FBA3A5B00F8EE2A /* StackNodeController.swift */,
 			);
 			path = NodeControllers;
@@ -465,7 +462,6 @@
 				090AEE681FBA395600F8EE2A /* VirtualObjectSelectionViewController.swift in Sources */,
 				090AEE911FBA3A5C00F8EE2A /* PlaneSelectionController.swift in Sources */,
 				090AEE871FBA3A5C00F8EE2A /* Candle.swift in Sources */,
-				090AEE851FBA3A5C00F8EE2A /* NodeController.swift in Sources */,
 				090AEE8F1FBA3A5C00F8EE2A /* VirtualObject+Extensions.swift in Sources */,
 				090AEE891FBA3A5C00F8EE2A /* Chip.swift in Sources */,
 				090AEE661FBA395600F8EE2A /* AppDelegate.swift in Sources */,

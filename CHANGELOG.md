@@ -11,3 +11,7 @@ All notable changes to this project will be documented in this file. ARControlle
 - Set of protocols for SceneControllers and NodeControllers
 - Set of protocols for Pan Gesture with Drag&Drop
 
+## [0.1.1](https://github.com/Michael-Vorontsov/ResultPromises/releases/tag/0.1.0)
+
+#### Minor fixes
+

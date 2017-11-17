@@ -11,7 +11,7 @@ import SceneKit
 
 public protocol NodeContorolling: NSObjectProtocol {
     var sceneView: SCNView { get }
-    var rootNode: VirtualObject! { get }
+    var rootNode: SCNNode! { get }
 }
 
 public protocol DragSourceProtocol: class, NodeContorolling {

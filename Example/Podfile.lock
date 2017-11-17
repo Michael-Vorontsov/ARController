@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ARController: 53a02e92fff50d132cebf1730e3b579c8edf5c56
+  ARController: 20ae4a7ec021c17cac58bdf9eba468edb6cb01c0
 
 PODFILE CHECKSUM: 41e05785cb9d32a7c9a48d031082acc9adac7e84
 
