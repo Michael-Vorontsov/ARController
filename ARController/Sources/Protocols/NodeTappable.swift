@@ -8,17 +8,17 @@
 import Foundation
 import ARKit
 
-protocol NodeTappable: NodeContorolling {
+public protocol NodeTappable: NodeContorolling {
     func didTapped(point: CGPoint, node: SCNNode, frame: ARFrame?)
 }
 
-protocol TapGestureRecognisable: class {
+public protocol TapGestureRecognisable: class {
     func processTapGestureAction(_ sender: UITapGestureRecognizer)
 }
 
-extension SceneControlling  where Self: TapGestureRecognisable  {
+public extension SceneControlling  where Self: TapGestureRecognisable  {
     
-    func processTapGestureAction(_ sender: UITapGestureRecognizer) {
+    public func processTapGestureAction(_ sender: UITapGestureRecognizer) {
         guard sender.state == .ended else { return }
         let touchLocation = sender.location(in: sceneView)
         

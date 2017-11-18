@@ -146,6 +146,7 @@ extension StackNodeController: NodeFocusing {
     func startFocus(at node: SCNNode, distance: Float, frame: ARFrame?) -> SCNNode {
         lastMaterial = node.geometry?.firstMaterial?.diffuse.contents
         node.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+        return node
     }
     
     func updateFocus(node: SCNNode, distance: Float, frame: ARFrame?) {
