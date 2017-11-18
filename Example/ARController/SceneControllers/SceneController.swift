@@ -12,8 +12,7 @@ import Photos
 import ARKit
 import ARController
 
-class SceneController: UIViewController, SceneControlling, SettingsConfugurable, SceneObjectTracking, PlaneConstruction, DebugVisualizing, PanGestureRecognisable {
-    
+class SceneController: UIViewController, SceneControlling, SettingsConfugurable, SceneObjectTracking, PlaneConstruction, DebugVisualizing, PanGestureRecognisable, FocusGestureRecognsing {
 
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var addObjectButton: UIButton!
@@ -26,7 +25,7 @@ class SceneController: UIViewController, SceneControlling, SettingsConfugurable,
     var textManager: TextManager?
     
     private var use3DOFTrackingFallback = false
-    private var screenCenter: CGPoint?
+    var screenCenter: CGPoint = CGPoint.zero
     private var restartExperienceButtonIsEnabled = true
     private var notificationSubscriptionTokens = [Any]()
     private var trackingFallbackTimer: Timer?
@@ -34,6 +33,10 @@ class SceneController: UIViewController, SceneControlling, SettingsConfugurable,
     weak var hoverOverController: DragOverProtocol?
     weak var draggedObjectSourceController: DragSourceProtocol?
     private var panGR: UIPanGestureRecognizer!
+    
+    var focusController: NodeFocusing?
+    var nodeInFocus: SCNNode?
+
     
     // Selected vitualObject
     weak var trackedObject: VirtualObject?
@@ -109,6 +112,7 @@ class SceneController: UIViewController, SceneControlling, SettingsConfugurable,
     func setupScene() {
         // set up sceneView
         sceneView.delegate = self
+        sceneView.session.delegate = self
     
         let sessionConfig = sceneView.session.configuration as? ARWorldTrackingConfiguration ?? ARWorldTrackingConfiguration()
         sessionConfig.planeDetection = planeDetectionEnabled ? .horizontal : []
@@ -119,6 +123,10 @@ class SceneController: UIViewController, SceneControlling, SettingsConfugurable,
         }
     }
     
+    public func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        processFocusGestureAction(frame)
+    }
+
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         textManager?.showTrackingQualityInfo(for: camera.trackingState, autoHide: !self.showDebugVisuals)
         
@@ -206,8 +214,7 @@ class SceneController: UIViewController, SceneControlling, SettingsConfugurable,
         self.isLoadingObject = true
         
         guard
-            let object = VirtualObject.availableObjects[index].copy() as? VirtualObject,
-            let screenCenter = screenCenter else {
+            let object = VirtualObject.availableObjects[index].copy() as? VirtualObject else {
                 return
         }
         
@@ -275,7 +282,6 @@ class SceneController: UIViewController, SceneControlling, SettingsConfugurable,
     }
     
     func updateFocusSquare() {
-        guard let screenCenter = screenCenter else { return }
         
         if trackedObject != nil && sceneView.isNode(trackedObject!, insideFrustumOf: sceneView.pointOfView!) {
             focusSquare?.hide()
@@ -457,7 +463,8 @@ extension SceneController: ARSCNViewDelegate {
     
 }
 
-extension SceneController: VirtualObjectSelectionViewControllerDelegate {}
+
+extension SceneController: VirtualObjectSelectionViewControllerDelegate, ARSessionDelegate {}
 
 extension SceneController: UIPopoverPresentationControllerDelegate {
     // MARK: - UIPopoverPresentationControllerDelegate

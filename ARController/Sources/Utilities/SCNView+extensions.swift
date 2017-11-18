@@ -9,6 +9,7 @@
 import Foundation
 import CoreGraphics
 import SceneKit
+import ARKit
 
 extension SCNView {
     
@@ -19,17 +20,8 @@ extension SCNView {
     ///   - objectsToExculde: List of objects to exclude from
     /// - Returns: List of objects behind point on screen
     public func objectsAt(point: CGPoint, exclude objectsToExculde: [VirtualObject]? = nil) -> [VirtualObject] {
-        
-        let results: [VirtualObject] = self
-            .hitTest(point, options: [:])
-            .filter{VirtualObject.isNodePartOfVirtualObject($0.node)}
-            .sorted{ $0.faceIndex > $1.faceIndex }
-            .map{ (VirtualObject.objectByNode($0.node))! }
-        
-        if let objectsToExculde = objectsToExculde {
-            return results.filter{ false == objectsToExculde.contains($0) }
-        }
-        return  results
+        return nodesAt(point: point, exclude: objectsToExculde)
+      
     }
     
     /// Generic function to fetch specific types of node behind point on screen
@@ -40,11 +32,10 @@ extension SCNView {
     ///   - point: Point on screen coordinate
     ///   - objectsToExculde: List of objects to exclude from
     /// - Returns: List of objects behind point on screen
-    public func nodesAt<T: SCNNode>(point: CGPoint, exclude objectsToExculde: [T]? = nil) -> [T] {
+    public func nodesAt<T: SCNNode>(_ type: T.Type? = nil, point: CGPoint, exclude objectsToExculde: [T]? = nil) -> [T] {
 
         let results: [T] = self
             .hitTest(point, options: [:])
-            .sorted{ $0.faceIndex > $1.faceIndex }
             .mapUnwrapped { arg -> (T?) in  SCNNode.nodeByPart(arg.node) }
 
         if let objectsToExculde = objectsToExculde {
@@ -53,5 +44,37 @@ extension SCNView {
         return  results
     }
 
+}
+
+extension SCNNode {
     
+    public static func nodeByPart<T: SCNNode>(_ node: SCNNode) -> T? {
+        if let parent = node.parent {
+            let convertedNode = (node as? T)
+            return convertedNode ?? nodeByPart(parent)
+        }
+        return node as? T
+    }
+    
+    public func enclosedController<T>(_ type: T.Type? = nil) -> T?{
+        var parent: SCNNode? = self
+        
+        repeat {
+            parent = parent?.parent
+            if let controller = (parent as? NodeControllable)?.controller as? T {
+                return controller
+            }
+        }while (parent != nil)
+        
+        return nil
+    }
+}
+
+public extension ARCamera {
+    public var position: SCNVector3 { return SCNVector3( transform.columns.3.x, transform.columns.3.y, transform.columns.3.z) }
+    
+    public func distanceTo(position worldPoistion: SCNVector3) -> Float {
+        let offset =  worldPoistion - position
+        return offset.length()
+    }
 }

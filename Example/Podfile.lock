@@ -1,5 +1,5 @@
 PODS:
-  - ARController (0.1.0)
+  - ARController (0.1.1)
 
 DEPENDENCIES:
   - ARController (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ARController: 20ae4a7ec021c17cac58bdf9eba468edb6cb01c0
+  ARController: e558ae1f5e5f970b33d6744eb76cecebca94f8ee
 
 PODFILE CHECKSUM: 41e05785cb9d32a7c9a48d031082acc9adac7e84
 

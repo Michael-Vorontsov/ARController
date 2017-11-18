@@ -9,11 +9,14 @@
 import Foundation
 import SceneKit
 import ARController
+import ARKit
 
 class StackNodeController: NodeController {
-    
+    var closeLook: SCNNode?  = nil
     var textCell: SCNText?
     var tempStack: SCNNode?
+    
+    var lastMaterial: Any?
     
     override func reloadRootNode() {
         let textNode = self.rootNode.childNode(withName: "textNode", recursively: true)
@@ -136,4 +139,30 @@ extension StackNodeController: DropDestinationProtocol {
         }
     }
     
+}
+
+
+extension StackNodeController: NodeFocusing {
+    func startFocus(at node: SCNNode, distance: Float, frame: ARFrame?) {
+        lastMaterial = node.geometry?.firstMaterial?.diffuse.contents
+        node.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+    }
+    
+    func updateFocus(node: SCNNode, distance: Float, frame: ARFrame?) {
+        if distance < 0.2 && closeLook != node {
+            closeLook?.removeAllActions()
+            node.runAction( SCNAction.repeatForever( SCNAction.rotateBy(x: 0, y: CGFloat.pi, z: 0, duration: 4.0)))
+            closeLook = node
+        }
+        else if distance > 0.2  {
+            closeLook?.removeAllActions()
+            closeLook = nil
+        }
+    }
+    
+    func endFocus(at node: SCNNode, frame: ARFrame?) {
+        node.geometry?.firstMaterial?.diffuse.contents = lastMaterial
+        lastMaterial = nil
+    }
+
 }

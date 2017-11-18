@@ -109,18 +109,6 @@ extension VirtualObject {
  
 }
 
-extension SCNNode {
-
-    public static func nodeByPart<T: SCNNode>(_ node: SCNNode) -> T? {
-        if let parent = node.parent {
-            let convertedNode = (node as? T)
-            return convertedNode ?? nodeByPart(parent)
-        }
-        return node as? T
-    }
-
-}
-
 // MARK: - Protocols for Virtual Objects
 
 public protocol ReactsToScale {
