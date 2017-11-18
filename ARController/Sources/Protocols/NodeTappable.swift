@@ -27,6 +27,8 @@ public extension SceneControlling  where Self: TapGestureRecognisable  {
         for each in nodes {
             if let controller: NodeTappable = each.enclosedController() {
                 controller.didTapped(point: touchLocation, node: each, frame: sceneView.session.currentFrame)
+                // Break cycle as soon as some controller able to process the touch
+                break;
             }
         }
     }
