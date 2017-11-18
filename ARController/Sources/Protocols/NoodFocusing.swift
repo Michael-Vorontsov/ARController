@@ -10,7 +10,7 @@ import ARKit
 import SceneKit
 
 public protocol NodeFocusing: NodeContorolling {
-    func startFocus(at node: SCNNode, distance: Float, frame: ARFrame?)
+    func startFocus(at node: SCNNode, distance: Float, frame: ARFrame?) -> SCNNode
     func updateFocus(node: SCNNode, distance: Float, frame: ARFrame?)
     func endFocus(at node: SCNNode, frame: ARFrame?)
 }
@@ -38,8 +38,7 @@ public extension FocusGestureRecognsing {
                 focusController?.endFocus(at: nodeInFocus, frame: arFrame)
             }
             if let node = node, let controller = controller, let hitTestPos = hitTest?.worldCoordinates {
-                self.nodeInFocus = node
-                controller.startFocus(
+                self.nodeInFocus = controller.startFocus(
                     at: node,
                     distance: arFrame.camera.distanceTo(position: hitTestPos),
                     frame: arFrame

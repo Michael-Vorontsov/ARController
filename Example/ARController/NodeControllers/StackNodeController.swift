@@ -143,7 +143,7 @@ extension StackNodeController: DropDestinationProtocol {
 
 
 extension StackNodeController: NodeFocusing {
-    func startFocus(at node: SCNNode, distance: Float, frame: ARFrame?) {
+    func startFocus(at node: SCNNode, distance: Float, frame: ARFrame?) -> SCNNode {
         lastMaterial = node.geometry?.firstMaterial?.diffuse.contents
         node.geometry?.firstMaterial?.diffuse.contents = UIColor.green
     }
