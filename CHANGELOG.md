@@ -21,3 +21,11 @@ All notable changes to this project will be documented in this file. ARControlle
 - Tap Gesture support
 - Focus (looking) at object support
 
+## [0.1.3](https://github.com/Michael-Vorontsov/ARController/releases/tag/0.1.3)
+
+#### Added
+- LongTap gesture support
+
+#### Update
+- A  gesture recogniser's process method return bool to determine either action had been processed by it.
+

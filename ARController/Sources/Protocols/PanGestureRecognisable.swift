@@ -11,7 +11,9 @@ import Foundation
 public protocol PanGestureRecognisable: SceneControlling {
     var hoverOverController: DragOverProtocol? {get set}
     var draggedObjectSourceController: DragSourceProtocol? {get set}
-    func processPanGestureAction(_ sender: UIPanGestureRecognizer)
+    
+    @discardableResult
+    func processPanGestureAction(_ sender: UIPanGestureRecognizer) -> Bool
 }
 
 public extension PanGestureRecognisable where Self: SceneObjectTracking {
@@ -79,11 +81,13 @@ public extension PanGestureRecognisable where Self: SceneObjectTracking {
         objectToDrag.setWorldTransform(transformation)
     }
     
-    public func processPanGestureAction(_ sender: UIPanGestureRecognizer) {
+    @discardableResult
+    public func processPanGestureAction(_ sender: UIPanGestureRecognizer) -> Bool {
         let touchLocation = sender.location(in: sceneView)
         
         let touchedObject = self.sceneView.objectsAt(point: touchLocation, exclude: nil == trackedObject ? nil : [trackedObject!]).first
-        
+        var gestureProcessed = false
+
         switch sender.state {
         case .began:
             if let touchedObject = touchedObject, let controller = (touchedObject.controller as? DragSourceProtocol) {
@@ -96,24 +100,29 @@ public extension PanGestureRecognisable where Self: SceneObjectTracking {
             } else {
                 self.trackedObject = touchedObject
             }
+            gestureProcessed = true
             displayVirtualObjectTransform()
             
         case .possible:
             break;
             
         case .changed:
-            guard let draggedObject = trackedObject else { return }
+            guard let draggedObject = trackedObject else { return false}
             dragObject(draggedObject, to: touchedObject, point: touchLocation)
+            gestureProcessed = true
         case .ended:
-            guard let draggedObject = trackedObject else { return }
+            guard let draggedObject = trackedObject else { return  false }
             self.finishDrag(draggedObject, to: touchedObject, atPoint: touchLocation)
+            gestureProcessed = true
             self.trackedObject = nil
             
         case .cancelled, .failed:
-            guard let draggedObject = trackedObject else { return }
+            guard let draggedObject = trackedObject else { return false}
             self.finishDrag(draggedObject, to: touchedObject, atPoint: touchLocation)
+            gestureProcessed = true
             self.trackedObject = nil
         }
+        return gestureProcessed
     }
     
 }
@@ -183,7 +192,8 @@ public extension PanGestureRecognisable where Self: SimpleObjectTracking {
         objectToDrag.opacity = 0.1
     }
     
-    public func processPanGestureAction(_ sender: UIPanGestureRecognizer) {
+    @discardableResult
+    public func processPanGestureAction(_ sender: UIPanGestureRecognizer) -> Bool {
         let touchLocation = sender.location(in: sceneView)
         
         let touchedObject = self.sceneView.objectsAt(point: touchLocation, exclude: nil == trackedObject ? nil : [trackedObject!]).first
@@ -205,18 +215,19 @@ public extension PanGestureRecognisable where Self: SimpleObjectTracking {
             break;
             
         case .changed:
-            guard let draggedObject = trackedObject else { return }
+            guard let draggedObject = trackedObject else { return true}
             dragObject(draggedObject, to: touchedObject, point: touchLocation)
         case .ended:
-            guard let draggedObject = trackedObject else { return }
+            guard let draggedObject = trackedObject else { return true}
             self.finishDrag(draggedObject, to: touchedObject, atPoint: touchLocation)
             self.trackedObject = nil
             
         case .cancelled, .failed:
-            guard let draggedObject = trackedObject else { return }
+            guard let draggedObject = trackedObject else { return true}
             self.finishDrag(draggedObject, to: touchedObject, atPoint: touchLocation)
             self.trackedObject = nil
         }
+        return true
     }
 }
 

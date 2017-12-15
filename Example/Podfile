@@ -3,10 +3,4 @@ use_frameworks!
 target 'ARController_Example' do
   platform :ios, '11.0'
   pod 'ARController', :path => '../'
-
-  target 'ARController_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end
