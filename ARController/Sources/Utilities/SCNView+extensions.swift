@@ -60,10 +60,10 @@ extension SCNNode {
         var parent: SCNNode? = self
         
         repeat {
-            parent = parent?.parent
             if let controller = (parent as? NodeControllable)?.controller as? T {
                 return controller
             }
+            parent = parent?.parent
         }while (parent != nil)
         
         return nil

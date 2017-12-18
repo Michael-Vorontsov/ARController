@@ -7,6 +7,18 @@
 //
 
 import Foundation
+import ARKit
+import SceneKit
+
+public protocol NodeDragging {
+    
+    //    didTapped(point: CGPoint, node: SCNNode, frame: ARFrame?)
+    func didDrag(node: SCNNode?, frame: ARFrame?, panGesture: UIPanGestureRecognizer) -> Bool
+}
+
+public protocol NodeDraggable: class {
+    var currentDragController: NodeDragging? { get set }
+}
 
 public protocol PanGestureRecognisable: SceneControlling {
     var hoverOverController: DragOverProtocol? {get set}
@@ -228,6 +240,48 @@ public extension PanGestureRecognisable where Self: SimpleObjectTracking {
             self.trackedObject = nil
         }
         return true
+    }
+}
+
+extension PanGestureRecognisable where Self: NodeDraggable {
+    @discardableResult
+    public func processPanGestureAction(_ sender: UIPanGestureRecognizer) -> Bool {
+        let touchLocation = sender.location(in: sceneView)
+        let nodes = self.sceneView.nodesAt(point: touchLocation)
+        
+        var gestureProcessed = false
+        let frame = (sceneView)?.session.currentFrame
+        
+
+//        defer {
+//            if [UIGestureRecognizerState.ended, UIGestureRecognizerState.failed, UIGestureRecognizerState.changed].contains(sender.state) {
+//                currentDragController = nil
+//            }
+//        }
+//        if Array<>
+
+        guard !gestureProcessed else { return gestureProcessed }
+        
+        for each in nodes {
+            if let controller: NodeDragging = each.enclosedController(), controller.didDrag(node: each, frame: frame, panGesture: sender) {
+                if sender.state == .began {
+                    currentDragController = controller
+                }
+                
+                gestureProcessed = true
+                break;
+            }
+        }
+        
+        if !gestureProcessed, sender.state != .began, let controller = currentDragController {
+            gestureProcessed = controller.didDrag(node: nodes.first, frame: frame, panGesture: sender)
+        }
+        
+    
+
+        
+        return gestureProcessed
+        
     }
 }
 

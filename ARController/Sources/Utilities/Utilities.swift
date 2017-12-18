@@ -214,8 +214,54 @@ public func *= (left: inout SCNVector3, right: Float) {
 	left = left * right
 }
 
-// MARK: - SCNMaterial extensions
+extension SCNVector3: Equatable {
+    public static func ==(lhs: SCNVector3, rhs: SCNVector3) -> Bool {
+        return SCNVector3EqualToVector3(lhs, rhs)
+    }
+}
 
+// MARK: - SCNVector4 extensions
+extension SCNVector4: Equatable {
+    public static func ==(lhs: SCNVector4, rhs: SCNVector4) -> Bool {
+        return SCNVector4EqualToVector4(lhs, rhs)
+    }
+}
+
+// MARK: - SCNMatrix4 extensions
+extension SCNMatrix4: Equatable, Hashable {
+    public static func ==(lhs: SCNMatrix4, rhs: SCNMatrix4) -> Bool {
+        return SCNMatrix4EqualToMatrix4(lhs, rhs)
+    }
+    
+    public var hashValue: Int {
+        return "\(self)".hashValue
+    }
+    
+    public func transition() -> SCNVector3 {
+        let transition = SCNVector3(
+            x: self.m41,
+            y: self.m42,
+            z: self.m43
+        )
+        return transition
+    }
+    
+    public static func * (lhs: SCNMatrix4, rhs: SCNMatrix4) -> SCNMatrix4 {
+        return SCNMatrix4Mult(lhs, rhs)
+    }
+    
+}
+
+// MARK: - CGPoint extensions
+extension CGPoint {
+    
+    public static func * <F: FloatingPoint>(lhs: CGPoint, rhs: F) -> CGPoint {
+        let multiplier = CGFloat(rhs as! CGFloat)
+        return CGPoint(x: lhs.x * multiplier, y: lhs.y * multiplier)
+    }
+}
+
+// MARK: - SCNMaterial extensions
 extension SCNMaterial {
 	
 	public static func material(withDiffuse diffuse: Any?, respondsToLighting: Bool = true) -> SCNMaterial {
