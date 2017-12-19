@@ -118,7 +118,7 @@ extension SCNNode {
 // MARK: - SCNVector3 extensions
 
 extension SCNVector3 {
-	
+    
 	public init(_ vec: vector_float3) {
 		self.x = vec.x
 		self.y = vec.y
@@ -218,6 +218,10 @@ extension SCNVector3: Equatable {
     public static func ==(lhs: SCNVector3, rhs: SCNVector3) -> Bool {
         return SCNVector3EqualToVector3(lhs, rhs)
     }
+}
+
+public func abs(_ vector: SCNVector3) -> SCNVector3 {
+    return SCNVector3(x: abs(vector.x), y: abs(vector.y), z: abs(vector.z))
 }
 
 // MARK: - SCNVector4 extensions
@@ -678,3 +682,5 @@ public func createPlane(size: CGSize, contents: AnyObject?) -> SCNPlane {
 	plane.materials = [SCNMaterial.material(withDiffuse: contents)]
 	return plane
 }
+
+

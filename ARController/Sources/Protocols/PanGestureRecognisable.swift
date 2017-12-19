@@ -244,6 +244,7 @@ public extension PanGestureRecognisable where Self: SimpleObjectTracking {
 }
 
 extension PanGestureRecognisable where Self: NodeDraggable {
+    
     @discardableResult
     public func processPanGestureAction(_ sender: UIPanGestureRecognizer) -> Bool {
         let touchLocation = sender.location(in: sceneView)
@@ -251,34 +252,20 @@ extension PanGestureRecognisable where Self: NodeDraggable {
         
         var gestureProcessed = false
         let frame = (sceneView)?.session.currentFrame
-        
 
-//        defer {
-//            if [UIGestureRecognizerState.ended, UIGestureRecognizerState.failed, UIGestureRecognizerState.changed].contains(sender.state) {
-//                currentDragController = nil
-//            }
-//        }
-//        if Array<>
-
-        guard !gestureProcessed else { return gestureProcessed }
-        
-        for each in nodes {
-            if let controller: NodeDragging = each.enclosedController(), controller.didDrag(node: each, frame: frame, panGesture: sender) {
-                if sender.state == .began {
-                    currentDragController = controller
-                }
-                
-                gestureProcessed = true
-                break;
-            }
-        }
-        
         if !gestureProcessed, sender.state != .began, let controller = currentDragController {
             gestureProcessed = controller.didDrag(node: nodes.first, frame: frame, panGesture: sender)
         }
         
-    
-
+        guard !gestureProcessed else { return gestureProcessed }
+        
+        for each in nodes {
+            if let controller: NodeDragging = each.enclosedController(), controller.didDrag(node: each, frame: frame, panGesture: sender) {
+                currentDragController = controller
+                gestureProcessed = true
+                break;
+            }
+        }
         
         return gestureProcessed
         
